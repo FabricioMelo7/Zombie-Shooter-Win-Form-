@@ -50,11 +50,12 @@
             this.ammoLabel.Font = new System.Drawing.Font("Old English Text MT", 18F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ammoLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.ammoLabel.Location = new System.Drawing.Point(35, 30);
+            this.ammoLabel.Location = new System.Drawing.Point(22, 9);
             this.ammoLabel.Name = "ammoLabel";
             this.ammoLabel.Size = new System.Drawing.Size(102, 28);
             this.ammoLabel.TabIndex = 0;
             this.ammoLabel.Text = "Ammo: 0";
+            this.ammoLabel.Click += new System.EventHandler(this.ammoLabel_Click);
             // 
             // killsLabel
             // 
@@ -62,7 +63,7 @@
             this.killsLabel.Font = new System.Drawing.Font("Old English Text MT", 18F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.killsLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.killsLabel.Location = new System.Drawing.Point(350, 30);
+            this.killsLabel.Location = new System.Drawing.Point(348, 9);
             this.killsLabel.Name = "killsLabel";
             this.killsLabel.Size = new System.Drawing.Size(94, 28);
             this.killsLabel.TabIndex = 1;
@@ -74,7 +75,7 @@
             this.healthLabel.Font = new System.Drawing.Font("Old English Text MT", 18F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.healthLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.healthLabel.Location = new System.Drawing.Point(660, 30);
+            this.healthLabel.Location = new System.Drawing.Point(660, 9);
             this.healthLabel.Name = "healthLabel";
             this.healthLabel.Size = new System.Drawing.Size(80, 28);
             this.healthLabel.TabIndex = 2;
@@ -83,7 +84,7 @@
             // progressBar1
             // 
             this.progressBar1.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.progressBar1.Location = new System.Drawing.Point(746, 35);
+            this.progressBar1.Location = new System.Drawing.Point(746, 14);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(165, 23);
             this.progressBar1.TabIndex = 3;
