@@ -209,6 +209,92 @@ namespace Zombie_Shooter
                 player1.Top += speed;
             }
             #endregion
+
+            //The code bellow is for the mechanic of picking up ammo, Zombie movements, Giving ammo to the player and removing the ammo from the map
+            #region LOOP 1 mechanics
+            /*
+             * The foreach loop will keep looping through and check if the conditions are met in order to execute the code within it.
+             * The loop will in a way, name every object it is looking at as "x". I looks at it and if the conditions are not met, it moves on to the next one.
+             */
+            // run the first for each loop below
+            // X is a control(object) and we will search for all controls in this loop
+            foreach (Control x in this.Controls)
+            {
+                // if the X is a picture box and X has a tag AMMO
+                if (x is PictureBox && x.Tag == "ammo")
+                {
+                    // check if x is hitting the player picture box
+                    if (((PictureBox)x).Bounds.IntersectsWith(player1.Bounds)) //VERY INTERSTING METHOD TO DETERMINE SOME SORT OF COLLISION OF 2 ITEMS
+                    {
+                        // once the player picks ammo,
+                        this.Controls.Remove((PictureBox)x); // remove the ammo picture box
+
+                        ((PictureBox)x).Dispose(); // dispose the picture box completely from the program
+                        ammo += 5; //add 5 ammo to the integer and the player
+                    }
+                }
+
+                // if the bullets hits the 4 borders of the game
+                // if x is a picture box and x has the tag of bullet
+
+                if (x is PictureBox && x.Tag == "bullet")
+                {
+                    // if the bullet is less than 1 pixel to the left
+                    // if the bullet is more than 930 pixels to the right
+                    // if the bullet is 10 pixels from the top
+                    // if the bullet is 700 pixels to the buttom
+
+                    if (((PictureBox)x).Left < 1 || ((PictureBox)x).Left > 930 || ((PictureBox)x).Top < 10 || ((PictureBox)x).Top > 700)
+                    {
+                        this.Controls.Remove(((PictureBox)x)); //Remove the bullet from the display
+                        ((PictureBox)x).Dispose(); //Dispose the bullet from the program
+
+                    }
+                }
+
+                // below is the if statement which will be checking if the player hits a zombie
+
+                if (x is PictureBox && x.Tag == "zombie")
+                {
+                    // below is the if statament thats checking the bounds of the player and the zombie
+
+                    if (((PictureBox)x).Bounds.IntersectsWith(player1.Bounds))
+                    {
+                        playerHealth -= 1; // if the zombie hits the player then we decrease the health by 1
+                    }
+
+                    //move zombie towards the player picture box
+                    if (((PictureBox)x).Left > player1.Left) // If the distance between the zombie left side to edge of screen is bigger than the distance between the player's left side to the edge of screen
+                                                             // The zombie on the right of the player will target the player's left side
+                    {
+                        ((PictureBox)x).Left -= zombieSpeed;    // move zombie towards the left of the player
+                        ((PictureBox)x).Image = Properties.Resources.zleft; // change the zombie image to the left
+                    }
+
+                    if (((PictureBox)x).Right < player1.Right) //MOVE ZOMBIES TO THE RIGHT
+                    {
+                        ((PictureBox)x).Left += zombieSpeed;    // move zombie towards the right of the player
+                        ((PictureBox)x).Image = Properties.Resources.zright;    // change the image to the right image
+
+                    }
+
+                    if (((PictureBox)x).Top > player1.Top) // MOVE THE ZOMBIES TO THE TOP
+                    {
+                        ((PictureBox)x).Top -= zombieSpeed;// move zombie upwards towards the players top
+                        ((PictureBox)x).Image = Properties.Resources.zup; //change the zombie picture to the top pointing image
+                    }
+
+                    if (((PictureBox)x).Top < player1.Top) // MOVE THE ZOMBIES TO THE BOTTOM
+                    {
+                        ((PictureBox)x).Top += zombieSpeed; // move the zombie towards the bottom of the player
+                        ((PictureBox)x).Image= Properties.Resources.zdown; // change the image to the down zombie
+                    }
+                }
+
+            }
+
+            #endregion
+
         }
 
         private void dropAmmo()
