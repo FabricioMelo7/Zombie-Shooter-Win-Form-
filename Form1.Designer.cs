@@ -86,8 +86,11 @@
             this.progressBar1.ForeColor = System.Drawing.SystemColors.GrayText;
             this.progressBar1.Location = new System.Drawing.Point(746, 14);
             this.progressBar1.Name = "progressBar1";
+            this.progressBar1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.progressBar1.Size = new System.Drawing.Size(165, 23);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 3;
+            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // zombie1
             // 

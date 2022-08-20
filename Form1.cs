@@ -16,7 +16,7 @@ namespace Zombie_Shooter
         {
             InitializeComponent();
         }
-
+        #region VARIABLES
         bool goup; //This boolean will be used for the player to go up the screen
         bool godown; //This boolean will be used for the player to go down the screen
         bool goleft; //This boolean will be used for the player to go left the screen
@@ -33,10 +33,13 @@ namespace Zombie_Shooter
 
         Random random = new Random();   //Instance of the 'random' class and will be used to create a random number for this game
 
+        string c;
+        
+        #endregion
 
 
 
- #region KEY PRESS EVENTS
+        #region KEY PRESS EVENTS
         private void keyisdown(object sender, KeyEventArgs e)
         {
             if (gameOver == true) return; //If the game is over then nothing will be executed in this event
@@ -115,7 +118,7 @@ namespace Zombie_Shooter
             {
                 ammo --; //Everytime user shoots, ammo is reduced by 1
                 //shoot(facing); // This will pass 'facing'(Up, Down, Lef or Right) as an argument for the 'shoot' function to fire the weapon that direction
-
+                shoot(facing);
 
                 if (ammo <= 1) //IF ammo is 1 or less
                 {
@@ -127,7 +130,7 @@ namespace Zombie_Shooter
         #endregion
 
 
-        private void gameEngine(object sender, EventArgs e)
+        private void gameEngine(object sender, EventArgs e) // This section could be considered "functionality rules" of the game, such as when hp hits 0, the game ends
         {
 
             if (playerHealth > 1) // if player health is greater than 1
@@ -144,33 +147,29 @@ namespace Zombie_Shooter
             }
 
             ammoLabel.Text = "Ammo: " + ammo; // Shows the ammount of ammo on the ammoLabel
-            killsLabel.Text = "Kills : " + killScore; // show the total kills on the killsLabel
+            killsLabel.Text = "Kills: " + killScore; // show the total kills on the killsLabel
 
 
             #region Health Bar
             //Bellow is Changing the colour of the health bar depending on the ammount of health
+            // if the player's health is above 50, health bar is green            
 
-
-            // if the player's health is above 50, health bar is green
-            if (playerHealth > 50)
+            switch (playerHealth)
             {
-                progressBar1.ForeColor = Color.Green;
+                case int n when (n >= 45):
+                    progressBar1.ForeColor = Color.Green;
+                    break;
 
+                case int n when (n <= 46):
+                    progressBar1.ForeColor = Color.Red;
+                    break;
             }
+            //If the player's health is bellow 50, health bar is red
+                  
 
-            //If the player's health is bellow 50, health bar is yellow
-            if (playerHealth < 50 )
-            {
-                progressBar1.ForeColor = Color.Yellow;
-            }
-             
 
-            // If the player's health is less than 20, health bar is red
 
-            if (playerHealth < 20)
-            {
-                progressBar1.ForeColor = Color.Red; // This will change the colour of the health bar to red if the player's health is bellow 20
-            }
+
             #endregion
 
             #region Player Movement
@@ -185,10 +184,12 @@ namespace Zombie_Shooter
             //Moving to the right( if the calculation of the .left and the player1 totalwith is less than the client total with)
             //?????????????????????????????????? WTF IS THE DEAL TIH player1.left + player.Width ????????
             #region "player1.Left + player1.Width" ?????
-            /* The method arguments seems very counter intuitive. At first I thought simply using (player1.Right > 0) would work as it made sense, but 
+            /* The method's arguments seems very counter intuitive. At first I thought simply using (player1.Right > 0) 
+             * would work as it made sense, but 
              * when I tried to implement the 'player1.Right -= speed', I was given an error where it says that "control.Right is read only". 
-             * I could't see how to change the 'write' permission innitially, and even if I forced a way around this, it would eventually take longer to write and might
-             * come up with bugs of its on. For now I will keep the "player1.Left + player.Width < 930" and try to fully understand it later o,
+             * I could't see how to change the 'write' permission innitially, and even if I forced a way around this, it would eventually take 
+             * longer to write and might
+             * come up with bugs of its on. For now I will keep the "player1.Left + player.Width < 930" and try to fully understand it later on.
              */
             #endregion
             if (goright == true && player1.Left + player1.Width < 930) 
@@ -260,11 +261,12 @@ namespace Zombie_Shooter
 
                     if (((PictureBox)x).Bounds.IntersectsWith(player1.Bounds))
                     {
-                        playerHealth -= 1; // if the zombie hits the player then we decrease the health by 1
+                        playerHealth -= 1; // if the zombie hits the player then we decrease the health by 1 every second
                     }
 
                     //move zombie towards the player picture box
-                    if (((PictureBox)x).Left > player1.Left) // If the distance between the zombie left side to edge of screen is bigger than the distance between the player's left side to the edge of screen
+                    if (((PictureBox)x).Left > player1.Left) // If the distance between the zombie left side to edge of screen is bigger-
+                                                             // -than the distance between the player's left side to the edge of screen
                                                              // The zombie on the right of the player will target the player's left side
                     {
                         ((PictureBox)x).Left -= zombieSpeed;    // move zombie towards the left of the player
@@ -291,29 +293,90 @@ namespace Zombie_Shooter
                     }
                 }
 
-            }
+                //The code bellow is the second loop, this is nested inside the first loop
+                // The bullet and zombie needs to be different than each other
+                // And then I can determine if they hit eachother.
 
-            #endregion
+                foreach (Control k in this.Controls)
+                {
+                    // The if statement bellow identifies the bullet and zombie
+                    if ((k is PictureBox && k.Tag == "bullet") && (x is PictureBox && x.Tag == "zombie"))
+                    {
+                        // The if statement bellow checkes if the bullet has hit the zombie
+                        if (x.Bounds.IntersectsWith(k.Bounds))
+                        {
+                            killScore++; //Increase the kill score by 1
+                            this.Controls.Remove(k); // the "this." reffers the code the bullet which hit zombie, and then removes it form the screen
+                            k.Dispose(); //This removes the bullet from the program all together
+
+                            this.Controls.Remove(x); //The "this." reffers the code to the zombie that was hit by the bullet in the if statement, and removes it from the screen
+                            x.Dispose(); //This removes the zombie from the program all together
+                            makeZombies(); //This function will be called to create another zombie in the screen after the other one have been killed.
+
+
+                        }
+                    }
+                }
+
+            }
+             #endregion
 
         }
 
         private void dropAmmo()
         {
+            //This functions creates an ammo image in the game
+
+            PictureBox ammo = new PictureBox();// create a new instance of the picture box
+            ammo.Image = Properties.Resources.ammo_Image; // assignment the ammo image to the picture box
+            ammo.SizeMode = PictureBoxSizeMode.AutoSize; // set the size to auto size
+            ammo.Left = random.Next(10, 890); // set the location to a random left
+            ammo.Top = random.Next(50, 600); // set the location to a random top
+            ammo.Tag = "ammo"; // set the tag to ammo
+            this.Controls.Add(ammo); // add the ammo picture box to the screen
+            ammo.BringToFront(); // bring it to front
+            player1.BringToFront(); // bring the player to front
 
         }
 
-        private void shoot()
+        private void shoot(string direct)
         {
+            //This function creates new bullets in the game
+
+            bullet shoot = new bullet(); // create a new instance of the bullet class
+            shoot.direction = direct; // assignment the direction to the bullet
+            shoot.bulletLeft = player1.Left + (player1.Width / 2); // place the bullet to left half of the player
+            shoot.bulletTop = player1.Top + (player1.Height / 2); // place the bullet on top half of the player
+            shoot.mkBullet(this); //Involke the mkBullet frok the class, giving "this" form as the argument
 
         }
 
         private void makeZombies()
         {
 
+            // when this function is called it will make zombies in the game
+
+            PictureBox zombie = new PictureBox();// create a new picture box called zombie
+            zombie.Image = Properties.Resources.zdown; // the default picture for the zombie is zdown
+            zombie.Tag = "zombie"; // add a tag to it called zombie
+            zombie.Left = random.Next(0, 900);  // generate a number between 0 and 900 and assignment that to the new zombies left
+            zombie.Top = random.Next(0, 800);  // generate a number between 0 and 800 and assignment that to the new zombies top
+            zombie.SizeMode = PictureBoxSizeMode.AutoSize; // set auto size for the new picture box
+            this.Controls.Add(zombie);   // add the picture box to the screen
+            player1.BringToFront();  // bring the player to the front
+
         }
 
         private void ammoLabel_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+                     
+
+
 
         }
     }
