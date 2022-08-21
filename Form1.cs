@@ -31,7 +31,8 @@ namespace Zombie_Shooter
         int ammo = 10; //Ammount of ammo the player have at the start of the game
         int zombieSpeed = 3; //Speed of the zombies
         int killScore = 0; // Player's score achieved in the game        
-        
+
+        int healPackNumber = 0;
 
         bool gameOver = false; //This boolean is false in the beginning and will be used when the game is finished
         List<PictureBox> heakthList = new List<PictureBox>();
@@ -136,12 +137,13 @@ namespace Zombie_Shooter
              *I implemented that once his hp reaches 30, the hp goes to 31 so that the if statement only allows one health pack to spawn,
              *Otherwise they would keep spawning until his hp went above 30
              */
-            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right && playerHealth <= 20)
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
             {
-                if (playerHealth < 30 && gameOver == false)
+                if (playerHealth < 30 && gameOver == false && healPackNumber == 0)
                 {
                     dropHeal();
-                    playerHealth = 31;
+                    healPackNumber++;
+
                 }
                 
                 
@@ -266,12 +268,15 @@ namespace Zombie_Shooter
                 //This is check if the player walked into a health pack and heal the player
                 if (x is PictureBox && x.Tag == "heal")// Identifies a picture box with the "heal" tag
                 {
+                    if (gameOver == true) { ((PictureBox)x).Dispose(); this.Controls.Remove((PictureBox)x); } // This removes healthPacks from the screen once the player dies
+
                     if (((PictureBox)x).Bounds.IntersectsWith(player1.Bounds))// Checks if the player is within bounds of the healthPack
                     {
                         this.Controls.Remove((PictureBox)x); //Removes the healPack from screen
 
                         ((PictureBox)x).Dispose(); //Removes the healthPack data from the system
                         playerHealth += 30; // Heals the player by 30
+                        healPackNumber--;
                                                
                         
                     }
@@ -455,6 +460,7 @@ namespace Zombie_Shooter
             goleft = false;
             goright = false;
             gameOver = false;
+            healPackNumber = 0;
 
             playerHealth = 100;
             killScore = 0;
