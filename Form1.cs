@@ -15,6 +15,8 @@ namespace Zombie_Shooter
         public Form1()
         {
             InitializeComponent();
+            RestartGame();
+           
         }
         #region VARIABLES
         bool goup; //This boolean will be used for the player to go up the screen
@@ -28,12 +30,15 @@ namespace Zombie_Shooter
         int speed = 10; //Speed of the player
         int ammo = 10; //Ammount of ammo the player have at the start of the game
         int zombieSpeed = 3; //Speed of the zombies
-        int killScore = 0; // Player's score achieved in the game
+        int killScore = 0; // Player's score achieved in the game        
+        
+
         bool gameOver = false; //This boolean is false in the beginning and will be used when the game is finished
 
+        List<PictureBox> zombieList = new List<PictureBox>();
         Random random = new Random();   //Instance of the 'random' class and will be used to create a random number for this game
 
-        string c;
+        
         
         #endregion
 
@@ -79,7 +84,7 @@ namespace Zombie_Shooter
                 player1.Image = Properties.Resources.down;
             }
 
-
+            
 
         }
 
@@ -87,7 +92,7 @@ namespace Zombie_Shooter
         private void keyisup(object sender, KeyEventArgs e)
         {
 
-            if (gameOver) return; //If the game is over then nothing will be executed in this event
+            //if (gameOver) return; //If the game is over then nothing will be executed in this event
 
             // below is the key up selection for the left key
             if (e.KeyCode == Keys.Left)
@@ -124,6 +129,12 @@ namespace Zombie_Shooter
                 {
                     dropAmmo(); //Involke the drop ammo function
                 }
+                                
+            }
+
+            if (e.KeyCode == Keys.Enter && gameOver== true)
+            {
+                RestartGame();
             }
 
         }
@@ -133,7 +144,7 @@ namespace Zombie_Shooter
         private void gameEngine(object sender, EventArgs e) // This section could be considered "functionality rules" of the game, such as when hp hits 0, the game ends
         {
 
-            if (playerHealth > 1) // if player health is greater than 1
+            if (playerHealth >= 1) // if player health is greater than 1
             {
                 progressBar1.Value = playerHealth; // assign the progress bar to the player health integer
                
@@ -306,11 +317,13 @@ namespace Zombie_Shooter
                         if (x.Bounds.IntersectsWith(k.Bounds))
                         {
                             killScore++; //Increase the kill score by 1
+
                             this.Controls.Remove(k); // the "this." reffers the code the bullet which hit zombie, and then removes it form the screen
                             k.Dispose(); //This removes the bullet from the program all together
 
                             this.Controls.Remove(x); //The "this." reffers the code to the zombie that was hit by the bullet in the if statement, and removes it from the screen
                             x.Dispose(); //This removes the zombie from the program all together
+                            zombieList.Remove(((PictureBox)x));
                             makeZombies(); //This function will be called to create another zombie in the screen after the other one have been killed.
 
 
@@ -342,12 +355,14 @@ namespace Zombie_Shooter
         private void shoot(string direct)
         {
             //This function creates new bullets in the game
-
-            bullet shoot = new bullet(); // create a new instance of the bullet class
-            shoot.direction = direct; // assignment the direction to the bullet
-            shoot.bulletLeft = player1.Left + (player1.Width / 2); // place the bullet to left half of the player
-            shoot.bulletTop = player1.Top + (player1.Height / 2); // place the bullet on top half of the player
-            shoot.mkBullet(this); //Involke the mkBullet frok the class, giving "this" form as the argument
+            if (gameOver != true)
+            {
+                bullet shoot = new bullet(); // create a new instance of the bullet class
+                shoot.direction = direct; // assignment the direction to the bullet
+                shoot.bulletLeft = player1.Left + (player1.Width / 2); // place the bullet to left half of the player
+                shoot.bulletTop = player1.Top + (player1.Height / 2); // place the bullet on top half of the player
+                shoot.mkBullet(this); //Involke the mkBullet frok the class, giving "this" form as the argument
+            }
 
         }
 
@@ -362,10 +377,44 @@ namespace Zombie_Shooter
             zombie.Left = random.Next(0, 900);  // generate a number between 0 and 900 and assignment that to the new zombies left
             zombie.Top = random.Next(0, 800);  // generate a number between 0 and 800 and assignment that to the new zombies top
             zombie.SizeMode = PictureBoxSizeMode.AutoSize; // set auto size for the new picture box
+            zombieList.Add(zombie);
             this.Controls.Add(zombie);   // add the picture box to the screen
             player1.BringToFront();  // bring the player to the front
 
         }
+
+
+        private void RestartGame()
+        {
+            player1.Image = Properties.Resources.up;
+
+            foreach (PictureBox i in zombieList)
+            {
+                this.Controls.Remove(i);
+
+            }
+
+            zombieList.Clear();
+
+            for(int i = 0; i < 3; i++)
+            {
+                makeZombies();
+            }
+
+            goup = false;
+            godown = false;
+            goleft = false;
+            goright = false;
+            gameOver = false;
+
+            playerHealth = 100;
+            killScore = 0;
+            ammo = 10;
+
+            timer1.Start();
+            
+        }
+
 
         private void ammoLabel_Click(object sender, EventArgs e)
         {
