@@ -34,7 +34,7 @@ namespace Zombie_Shooter
         
 
         bool gameOver = false; //This boolean is false in the beginning and will be used when the game is finished
-
+        List<PictureBox> heakthList = new List<PictureBox>();
         List<PictureBox> zombieList = new List<PictureBox>();
         Random random = new Random();   //Instance of the 'random' class and will be used to create a random number for this game
 
@@ -131,7 +131,23 @@ namespace Zombie_Shooter
                 }
                                 
             }
+            /*
+             *The Code bellow drops a health pack for the player when his ehalth reaches 30
+             *I implemented that once his hp reaches 30, the hp goes to 31 so that the if statement only allows one health pack to spawn,
+             *Otherwise they would keep spawning until his hp went above 30
+             */
+            if (e.KeyCode == Keys.Up || e.KeyCode == Keys.Down || e.KeyCode == Keys.Left || e.KeyCode == Keys.Right && playerHealth <= 20)
+            {
+                if (playerHealth < 30 && gameOver == false)
+                {
+                    dropHeal();
+                    playerHealth = 31;
+                }
+                
+                
+            }
 
+            //The code bellow restarts the game. Once the conditions are met, the "RestartGame" function is called
             if (e.KeyCode == Keys.Enter && gameOver== true)
             {
                 RestartGame();
@@ -146,6 +162,7 @@ namespace Zombie_Shooter
 
             if (playerHealth >= 1) // if player health is greater than 1
             {
+                progressBar1.Maximum = 100; // Giving a maximum value to the HP bar, prevents an exception from happening.(Hp going above the maximum "Limit" )
                 progressBar1.Value = playerHealth; // assign the progress bar to the player health integer
                
             }
@@ -243,6 +260,20 @@ namespace Zombie_Shooter
 
                         ((PictureBox)x).Dispose(); // dispose the picture box completely from the program
                         ammo += 5; //add 5 ammo to the integer and the player
+                    }
+                }
+
+                //This is check if the player walked into a health pack and heal the player
+                if (x is PictureBox && x.Tag == "heal")// Identifies a picture box with the "heal" tag
+                {
+                    if (((PictureBox)x).Bounds.IntersectsWith(player1.Bounds))// Checks if the player is within bounds of the healthPack
+                    {
+                        this.Controls.Remove((PictureBox)x); //Removes the healPack from screen
+
+                        ((PictureBox)x).Dispose(); //Removes the healthPack data from the system
+                        playerHealth += 30; // Heals the player by 30
+                                               
+                        
                     }
                 }
 
@@ -383,7 +414,25 @@ namespace Zombie_Shooter
 
         }
 
+        private void dropHeal()
+        {
+            //This functions creates an Heal image in the game
 
+            PictureBox heal = new PictureBox();// create a new instance of the picture box
+            heal.Image = Properties.Resources.heal; // assignment the heal image to the picture box
+            heal.SizeMode = PictureBoxSizeMode.AutoSize; // set the size to auto size
+            heal.Left = random.Next(10, 890); // set the location to a random left
+            heal.Top = random.Next(50, 600); // set the location to a random top
+            heal.Tag = "heal"; // set the tag to heal
+            this.Controls.Add(heal); // add the heal picture box to the screen
+            heal.BringToFront(); // bring it to front
+            player1.BringToFront(); // bring the player to front
+
+        }
+
+
+        //The method bellow is used to restart the game.
+        //The method restart some variables, clears zombies from the screen, Make other zombies and restarts the timer
         private void RestartGame()
         {
             player1.Image = Properties.Resources.up;
