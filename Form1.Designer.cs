@@ -29,19 +29,22 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.ammoLabel = new System.Windows.Forms.Label();
             this.killsLabel = new System.Windows.Forms.Label();
             this.healthLabel = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.zombie1 = new System.Windows.Forms.PictureBox();
-            this.zombie2 = new System.Windows.Forms.PictureBox();
-            this.player1 = new System.Windows.Forms.PictureBox();
-            this.zombie3 = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.zombie1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zombie2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.player1)).BeginInit();
+            this.zombie3 = new System.Windows.Forms.PictureBox();
+            this.player1 = new System.Windows.Forms.PictureBox();
+            this.zombie2 = new System.Windows.Forms.PictureBox();
+            this.zombie1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.positionLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.zombie3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zombie2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zombie1)).BeginInit();
             this.SuspendLayout();
             // 
             // ammoLabel
@@ -91,39 +94,15 @@
             this.progressBar1.TabIndex = 3;
             this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
-            // zombie1
+            // timer1
             // 
-            this.zombie1.Image = global::Zombie_Shooter.Properties.Resources.zdown;
-            this.zombie1.Location = new System.Drawing.Point(113, 149);
-            this.zombie1.Name = "zombie1";
-            this.zombie1.Size = new System.Drawing.Size(71, 71);
-            this.zombie1.TabIndex = 4;
-            this.zombie1.TabStop = false;
-            this.zombie1.Tag = "zombie";
-            // 
-            // zombie2
-            // 
-            this.zombie2.Image = global::Zombie_Shooter.Properties.Resources.zdown;
-            this.zombie2.Location = new System.Drawing.Point(709, 149);
-            this.zombie2.Name = "zombie2";
-            this.zombie2.Size = new System.Drawing.Size(71, 71);
-            this.zombie2.TabIndex = 5;
-            this.zombie2.TabStop = false;
-            this.zombie2.Tag = "zombie";
-            // 
-            // player1
-            // 
-            this.player1.Image = global::Zombie_Shooter.Properties.Resources.up;
-            this.player1.Location = new System.Drawing.Point(411, 308);
-            this.player1.Name = "player1";
-            this.player1.Size = new System.Drawing.Size(71, 100);
-            this.player1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.player1.TabIndex = 6;
-            this.player1.TabStop = false;
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 20;
+            this.timer1.Tick += new System.EventHandler(this.gameEngine);
             // 
             // zombie3
             // 
-            this.zombie3.Image = global::Zombie_Shooter.Properties.Resources.zup;
+            this.zombie3.Image = global::Zombie_Shooter.Properties.Resources.LULA_ZUMBI_RIGHT__1_;
             this.zombie3.Location = new System.Drawing.Point(411, 540);
             this.zombie3.Name = "zombie3";
             this.zombie3.Size = new System.Drawing.Size(71, 71);
@@ -131,11 +110,56 @@
             this.zombie3.TabStop = false;
             this.zombie3.Tag = "zombie";
             // 
-            // timer1
+            // player1
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 20;
-            this.timer1.Tick += new System.EventHandler(this.gameEngine);
+            this.player1.Image = global::Zombie_Shooter.Properties.Resources.bolsonar_dIREITA__1_;
+            this.player1.InitialImage = global::Zombie_Shooter.Properties.Resources.bolsonar_dIREITA__1_;
+            this.player1.Location = new System.Drawing.Point(411, 308);
+            this.player1.Name = "player1";
+            this.player1.Size = new System.Drawing.Size(98, 100);
+            this.player1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.player1.TabIndex = 6;
+            this.player1.TabStop = false;
+            // 
+            // zombie2
+            // 
+            this.zombie2.Image = global::Zombie_Shooter.Properties.Resources.LULA_ZUMBI_LEFT__1_;
+            this.zombie2.Location = new System.Drawing.Point(709, 149);
+            this.zombie2.Name = "zombie2";
+            this.zombie2.Size = new System.Drawing.Size(71, 71);
+            this.zombie2.TabIndex = 5;
+            this.zombie2.TabStop = false;
+            this.zombie2.Tag = "zombie";
+            // 
+            // zombie1
+            // 
+            this.zombie1.Image = global::Zombie_Shooter.Properties.Resources.LULA_ZUMBI_RIGHT__1_;
+            this.zombie1.Location = new System.Drawing.Point(113, 149);
+            this.zombie1.Name = "zombie1";
+            this.zombie1.Size = new System.Drawing.Size(71, 71);
+            this.zombie1.TabIndex = 4;
+            this.zombie1.TabStop = false;
+            this.zombie1.Tag = "zombie";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "label1";
+            // 
+            // positionLabel
+            // 
+            this.positionLabel.AutoSize = true;
+            this.positionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.positionLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.positionLabel.Location = new System.Drawing.Point(204, 23);
+            this.positionLabel.Name = "positionLabel";
+            this.positionLabel.Size = new System.Drawing.Size(64, 25);
+            this.positionLabel.TabIndex = 9;
+            this.positionLabel.Text = "label2";
             // 
             // Form1
             // 
@@ -143,6 +167,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
             this.ClientSize = new System.Drawing.Size(923, 666);
+            this.Controls.Add(this.positionLabel);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.zombie3);
             this.Controls.Add(this.player1);
             this.Controls.Add(this.zombie2);
@@ -151,14 +177,15 @@
             this.Controls.Add(this.healthLabel);
             this.Controls.Add(this.killsLabel);
             this.Controls.Add(this.ammoLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Kill or Die";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyisdown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyisup);
-            ((System.ComponentModel.ISupportInitialize)(this.zombie1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zombie2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.player1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.zombie3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zombie2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.zombie1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -175,6 +202,8 @@
         private System.Windows.Forms.PictureBox player1;
         private System.Windows.Forms.PictureBox zombie3;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label positionLabel;
     }
 }
 

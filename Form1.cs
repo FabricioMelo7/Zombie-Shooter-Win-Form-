@@ -16,7 +16,8 @@ namespace Zombie_Shooter
         {
             InitializeComponent();
             RestartGame();
-           
+
+            this.Icon = Properties.Resources.BorsonarICON;
         }
         #region VARIABLES
         bool goup; //This boolean will be used for the player to go up the screen
@@ -55,7 +56,7 @@ namespace Zombie_Shooter
             {
                 goleft = true;
                 facing = "left";
-                player1.Image= Properties.Resources.left;
+                player1.Image= Properties.Resources.bolsonar_LEFT__1_;
             }
 
 
@@ -64,7 +65,7 @@ namespace Zombie_Shooter
             {
                 goright = true;
                 facing = "right";
-                player1.Image= Properties.Resources.right;
+                player1.Image= Properties.Resources.bolsonar_dIREITA__1_;
 
             }
 
@@ -73,7 +74,7 @@ namespace Zombie_Shooter
             {
                 goup = true;
                 facing = "up";
-                player1.Image= Properties.Resources.up;
+                player1.Image= Properties.Resources.bolsonarUP__1_;
 
             }
 
@@ -82,7 +83,7 @@ namespace Zombie_Shooter
             {
                 godown = true;
                 facing = "down";
-                player1.Image = Properties.Resources.down;
+                player1.Image = Properties.Resources.bolsonar_down__1_;
             }
 
             
@@ -166,7 +167,7 @@ namespace Zombie_Shooter
             {
                 progressBar1.Maximum = 100; // Giving a maximum value to the HP bar, prevents an exception from happening.(Hp going above the maximum "Limit" )
                 progressBar1.Value = playerHealth; // assign the progress bar to the player health integer
-               
+                positionLabel.Text = Convert.ToString(player1.Bounds);
             }
             else //If Player is dead...
             {
@@ -179,6 +180,7 @@ namespace Zombie_Shooter
             ammoLabel.Text = "Ammo: " + ammo; // Shows the ammount of ammo on the ammoLabel
             killsLabel.Text = "Kills: " + killScore; // show the total kills on the killsLabel
 
+            
 
             #region Health Bar
             //Bellow is Changing the colour of the health bar depending on the ammount of health
@@ -317,26 +319,26 @@ namespace Zombie_Shooter
                                                              // The zombie on the right of the player will target the player's left side
                     {
                         ((PictureBox)x).Left -= zombieSpeed;    // move zombie towards the left of the player
-                        ((PictureBox)x).Image = Properties.Resources.zleft; // change the zombie image to the left
+                        ((PictureBox)x).Image = Properties.Resources.LULA_ZUMBI_LEFT__1_; // change the zombie image to the left
                     }
 
                     if (((PictureBox)x).Right < player1.Right) //MOVE ZOMBIES TO THE RIGHT
                     {
                         ((PictureBox)x).Left += zombieSpeed;    // move zombie towards the right of the player
-                        ((PictureBox)x).Image = Properties.Resources.zright;    // change the image to the right image
+                        ((PictureBox)x).Image = Properties.Resources.LULA_ZUMBI_RIGHT__1_;    // change the image to the right image
 
                     }
 
                     if (((PictureBox)x).Top > player1.Top) // MOVE THE ZOMBIES TO THE TOP
                     {
                         ((PictureBox)x).Top -= zombieSpeed;// move zombie upwards towards the players top
-                        ((PictureBox)x).Image = Properties.Resources.zup; //change the zombie picture to the top pointing image
+                        //((PictureBox)x).Image = Properties.Resources.zup; //change the zombie picture to the top pointing image
                     }
 
                     if (((PictureBox)x).Top < player1.Top) // MOVE THE ZOMBIES TO THE BOTTOM
                     {
                         ((PictureBox)x).Top += zombieSpeed; // move the zombie towards the bottom of the player
-                        ((PictureBox)x).Image= Properties.Resources.zdown; // change the image to the down zombie
+                        //((PictureBox)x).Image= Properties.Resources.zdown; // change the image to the down zombie
                     }
                 }
 
@@ -484,4 +486,5 @@ namespace Zombie_Shooter
 
         }
     }
+    // ADDD SOUND EFFECTS!!!!!!!!!!!!!!
 }
